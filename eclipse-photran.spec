@@ -35,6 +35,7 @@ BuildRequires:  java-gcj-compat-devel >= 1.0.64
 %endif
 
 BuildRequires:  java-rpmbuild
+BuildRequires:  zip
 Requires:       gdb make gcc-gfortran
 Requires:       eclipse-platform >= 1:3.3.0
 
