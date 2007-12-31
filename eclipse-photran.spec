@@ -44,7 +44,7 @@ ExclusiveArch: %{ix86} x86_64 ppc ia64
 %else
 ExclusiveArch: %{ix86} x86_64 ppc ia64
 %endif
-BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n) 
+BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root
 
 
 %description
