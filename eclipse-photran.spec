@@ -15,7 +15,7 @@
 Summary:        Eclipse Fortran Development Tools (Photran) plugin
 Name:           eclipse-photran
 Version:        %{majmin}
-Release:        %mkrel 0.b3.1.1
+Release:        %mkrel 0.b3.1.2
 License:        EPL
 Group:          Development/Java
 URL:            http://www.eclipse.org/photran
@@ -60,8 +60,8 @@ find -name \*.prefs | xargs sed -i -e 's/source=1.3/source=1.5/'
 
 
 %build
-#export JAVA_HOME=%{java_home}
-#export PATH=%{java_home}/bin:%{java_home}/jre/bin:/usr/bin:$PATH
+export OPT_JAR_LIST=:
+export CLASSPATH=
 
 # See comments in the script to understand this.
 /bin/sh -x %{eclipse_base}/buildscripts/copy-platform SDK %{eclipse_base} cdt
