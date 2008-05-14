@@ -15,9 +15,9 @@
 Summary:        Eclipse Fortran Development Tools (Photran) plugin
 Name:           eclipse-photran
 Version:        %{majmin}
-Release:        %mkrel 0.b3.1.2
+Release:        %mkrel 0.b3.1.3
 License:        EPL
-Group:          Development/Java
+Group:          Development/Other
 URL:            http://www.eclipse.org/photran
 Requires:       eclipse-platform
 
@@ -101,10 +101,7 @@ for archplugin in $(find ${RPM_BUILD_ROOT}%{eclipse_base}/plugins -name \*%{ecli
   chmod -R 755 ${RPM_BUILD_ROOT}%{eclipse_lib_base}/plugins/$(basename $archplugin)
 done
 
-%if %{gcj_support}
-%{_bindir}/aot-compile-rpm
-%endif
-
+%{gcj_compile}
 
 %clean 
 rm -rf ${RPM_BUILD_ROOT}
@@ -123,9 +120,6 @@ rm -rf ${RPM_BUILD_ROOT}
 %defattr(-,root,root)
 %doc org.eclipse.photran-feature/epl-v10.html
 %{eclipse_base}/plugins/*
-%if %{gcj_support}
-%dir %{_libdir}/gcj/%{name}
-%attr(0755,root,root) %{_libdir}/gcj/%{name}/*
-%endif
+%{gcj_files}
 
 
