@@ -15,7 +15,7 @@
 Summary:        Eclipse Fortran Development Tools (Photran) plugin
 Name:           eclipse-photran
 Version:        %{majmin}
-Release:        %mkrel 0.b3.1.3
+Release:        %mkrel 4.b3.1.3
 License:        EPL
 Group:          Development/Other
 URL:            http://www.eclipse.org/photran
