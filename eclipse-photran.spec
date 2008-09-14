@@ -40,7 +40,7 @@ that are useful for Fortran development.
 
 %package        xlf
 Summary:        IBM XL Fortran compiler support for Photran
-Group:          Development/Libraries
+Group:          Development/Other
 Requires:       %{name} = %{version}-%{release}
 
 %description    xlf
