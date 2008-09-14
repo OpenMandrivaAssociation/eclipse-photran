@@ -19,6 +19,7 @@ Source0: org.eclipse.photran-v20080808_4_0_0_Beta4.tar.gz
 Source1: makesource.sh
 BuildRequires: eclipse-pde
 BuildRequires: eclipse-cdt >= 4.0.1
+BuildRequires: tomcat5-jsp-2.0-api
 %if %{gcj_support}
 BuildRequires:  java-gcj-compat-devel >= 1.0.64
 %endif
