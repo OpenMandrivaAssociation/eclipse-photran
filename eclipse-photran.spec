@@ -10,7 +10,7 @@ Name:           eclipse-photran
 Version:        8.1.4
 Release:        1.1
 License:        EPL
-Group:          Development/Tools
+Group:          Development/Java
 URL:            http://www.eclipse.org/ptp
 
 # The following tarballs were downloaded from the git repositories
@@ -31,7 +31,7 @@ An Eclipse-based Integrated Development Environment for Fortran.
 
 %package intel
 Summary:        Intel Fortran compiler support for Photran
-Group:          Development/Libraries
+Group:          Development/Java
 Requires:       eclipse-photran = %{version}-%{release}
 
 %description intel
@@ -41,7 +41,7 @@ the Intel Fortran compiler in Photran/FDT.
 
 %package xlf
 Summary:        IBM XLF Compiler Support
-Group:          Development/Libraries
+Group:          Development/Java
 Requires:       eclipse-photran = %{version}-%{release}
 
 %description xlf
