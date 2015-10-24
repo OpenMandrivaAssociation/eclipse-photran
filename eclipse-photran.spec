@@ -22,6 +22,9 @@ Source1:        makesource.sh
 BuildRequires:  maven-local
 BuildRequires:  tycho
 BuildRequires:  eclipse-cdt >= %{cdtreq}
+BuildRequires:	java-1.7.0-openjdk-devel
+BuildConflicts: java-1.8.0-openjdk-devel
+
 BuildArch:      noarch
 Requires:       eclipse-cdt >= %{cdtreq}
 
