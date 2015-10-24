@@ -1,25 +1,27 @@
 %{?_javapackages_macros:%_javapackages_macros}
-
 %global eclipse_base            %{_datadir}/eclipse
 %global cdtreq                  1:8.1.0
-%global photran_git_tag         accb92132f3474bdc8c241ba86990d65dc68b970
-%global photran_build_id        201505301604
+%global photran_build_id        201402042348
+%global photran_git_tag         PTP_7_0_4
+#global photran_git_tag         5313e0561fbb3d888ecf1817c6101a36e0b89a07
 
 Summary:        Fortran Development Tools (Photran) for Eclipse
 Name:           eclipse-photran
-Version:        9.1.0
-Release:        1
+Version:        8.1.4
+Release:        1.1
 License:        EPL
 Group:          Development/Tools
 URL:            http://www.eclipse.org/ptp
 
 # The following tarballs were downloaded from the git repositories
 Source0:        http://git.eclipse.org/c/ptp/org.eclipse.photran.git/snapshot/org.eclipse.photran-%{photran_git_tag}.tar.bz2
+# These are made with makesource.sh
+#Source0:        org.eclipse.photran-%{photran_git_tag}.tar.xz
+Source1:        makesource.sh
 
 BuildRequires:  maven-local
 BuildRequires:  tycho
 BuildRequires:  eclipse-cdt >= %{cdtreq}
-BuildRequires:  eclipse-license
 BuildArch:      noarch
 Requires:       eclipse-cdt >= %{cdtreq}
 
@@ -29,7 +31,7 @@ An Eclipse-based Integrated Development Environment for Fortran.
 
 %package intel
 Summary:        Intel Fortran compiler support for Photran
-Group:          Development/Java
+Group:          Development/Libraries
 Requires:       eclipse-photran = %{version}-%{release}
 
 %description intel
@@ -39,7 +41,7 @@ the Intel Fortran compiler in Photran/FDT.
 
 %package xlf
 Summary:        IBM XLF Compiler Support
-Group:          Development/Java
+Group:          Development/Libraries
 Requires:       eclipse-photran = %{version}-%{release}
 
 %description xlf
@@ -48,12 +50,15 @@ Error parser and managed build tool chain for the IBM XLF compiler.
 
 %prep
 %setup -q -n org.eclipse.photran-%{photran_git_tag}
+# Fix tycho version
+tychover=$(sed -ne '/<version>/{s/.*>\(.*\)<.*/\1/;p;q}' < /usr/share/maven-fragments/tycho)
+sed -i -e "/tycho-version/s/>.*</>${tychover}</" pom.xml
 
 # We need to rebuild this jar from the sources within it
 pwd
 mkdir cdtdb-4.0.3-eclipse
 pushd cdtdb-4.0.3-eclipse
-unzip -q ../org.eclipse.photran.core.vpg/lib/cdtdb-4.0.3-eclipse.jar
+unzip -q ../org.eclipse.rephraserengine.core/cdtdb-4.0.3-eclipse.jar
 find -name \*.class -exec rm {} +
 popd
 # Delete any other jars in the project
@@ -71,12 +76,12 @@ export PATH=/usr/bin:$PATH
 pushd cdtdb-4.0.3-eclipse
 classpath=$(echo /usr/lib*/eclipse/plugins/org.eclipse.equinox.common_*.jar | sed -e 's/ /:/g')
 find -name \*java -exec javac -classpath $classpath '{}' +
-jar cf ../org.eclipse.photran.core.vpg/lib/cdtdb-4.0.3-eclipse.jar *
+jar cf ../org.eclipse.rephraserengine.core/cdtdb-4.0.3-eclipse.jar *
 popd
 #Interferes with feature build
 rm -rf cdtdb-4.0.3-eclipse
 # Build the projects
-xmvn -o -DforceContextQualifier=%{photran_build_id} verify
+mvn-rpmbuild -DforceContextQualifier=%{photran_build_id} install
 
 
 %install
@@ -93,6 +98,11 @@ done
 cp -u org.eclipse.photran.repo/target/repository/plugins/*.jar \
    %{buildroot}%{eclipse_base}/dropins/photran/eclipse/plugins/
 
+# special case for rephraserengine feature
+sed -i -e '/org.eclipse.rephraserengine_/d' files.org.eclipse.photran_%{version}.%{photran_build_id}
+
+# rpm 5 doesnt handle multiple -f
+cat files.org.eclipse.rephraserengine_%{version}.%{photran_build_id} >> files.org.eclipse.photran_%{version}.%{photran_build_id}
 
 %files -f files.org.eclipse.photran_%{version}.%{photran_build_id}
 %doc org.eclipse.photran-feature/epl-v10.html
@@ -101,6 +111,7 @@ cp -u org.eclipse.photran.repo/target/repository/plugins/*.jar \
 %dir %{eclipse_base}/dropins/photran/eclipse/features
 %dir %{eclipse_base}/dropins/photran/eclipse/plugins
 %{eclipse_base}/dropins/photran/eclipse/features/org.eclipse.photran_*
+%{eclipse_base}/dropins/photran/eclipse/features/org.eclipse.rephraserengine_*
 
 %files intel -f files.org.eclipse.photran.intel_%{version}.%{photran_build_id}
 %doc org.eclipse.photran-feature/epl-v10.html
@@ -112,27 +123,6 @@ cp -u org.eclipse.photran.repo/target/repository/plugins/*.jar \
 
 
 %changelog
-* Thu Jun 25 2015 Orion Poplawski <orion@cora.nwra.com> - 9.1.0-1
-- Update to 9.1.0
-
-* Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 9.0.1-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
-
-* Mon Mar 9 2015 Orion Poplawski <orion@cora.nwra.com> - 9.0.1-1
-- Update to 9.0.1
-
-* Wed Oct 15 2014 Orion Poplawski <orion@cora.nwra.com> - 9.0.0-1
-- Update to 9.0.0
-
-* Wed Aug 20 2014 Orion Poplawski <orion@cora.nwra.com> - 8.2.1-1
-- Update to 8.2.1
-
-* Wed Jul 2 2014 Alexander Kurtakov <akurtako@redhat.com> 8.2.0-1
-- Update to 8.2.0.
-
-* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 8.1.4-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
-
 * Tue Apr 8 2014 Orion Poplawski <orion@cora.nwra.com> - 8.1.4-1
 - Update to 8.1.4
 
@@ -159,3 +149,4 @@ cp -u org.eclipse.photran.repo/target/repository/plugins/*.jar \
 
 * Wed Apr 10 2013 Orion Poplawski <orion@cora.nwra.com> - 8.1.0-0.1.20130409git
 - Split photran out of eclipse-ptp package
+
