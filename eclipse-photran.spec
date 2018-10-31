@@ -8,7 +8,7 @@
 Summary:        Fortran Development Tools (Photran) for Eclipse
 Name:           eclipse-photran
 Version:        9.1.0
-Release:        1
+Release:        2
 License:        EPL
 Group:          Development/Tools
 URL:            http://www.eclipse.org/ptp
