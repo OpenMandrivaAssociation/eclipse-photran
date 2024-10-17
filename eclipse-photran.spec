@@ -11,7 +11,7 @@ Version:        9.1.0
 Release:        2
 License:        EPL
 Group:          Development/Tools
-URL:            http://www.eclipse.org/ptp
+URL:            https://www.eclipse.org/ptp
 
 # The following tarballs were downloaded from the git repositories
 Source0:        http://git.eclipse.org/c/ptp/org.eclipse.photran.git/snapshot/org.eclipse.photran-%{photran_git_tag}.tar.bz2
